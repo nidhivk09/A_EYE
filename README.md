@@ -2,131 +2,75 @@
 
 
 
-An Edge AI–based assistive vision system designed to help visually impaired users perceive their surroundings in real time. The system performs on-device object detection, classification, and distance estimation using a Nicla Vision board and an Edge Impulse model, and converts visual information into spatial audio and text-to-speech (TTS) feedback via a Next.js web application.
+An **Edge AI–based assistive vision system** designed to help visually impaired users perceive their surroundings in real time. The system performs **on-device object detection, classification, and distance estimation** using a **Nicla Vision** board and an **Edge Impulse** model, and converts visual information into **spatial audio and text-to-speech (TTS)** feedback via a **Next.js web application**.
 
-⚠️ No Raspberry Pi is used — all vision inference runs directly on a microcontroller.
+> ⚠️ **No Raspberry Pi is used** — all vision inference runs directly on a microcontroller.
 
-Key Highlights
+---
 
-✅ Pure microcontroller-based Edge AI (Nicla Vision)
+## 🔑 Key Highlights
 
-✅ Real-time object detection & distance estimation
+- ✅ Pure **microcontroller-based Edge AI** (Nicla Vision)
+- ✅ Real-time object detection, classification & distance estimation
+- ✅ Edge Impulse–trained ML model
+- ✅ Spatial audio with left / center / right panning
+- ✅ Privacy-first architecture (no raw images transmitted)
+- ✅ Low-latency, offline-capable inference
 
-✅ Edge Impulse–trained ML model
+---
 
-✅ Spatial audio with left/center/right panning
+## 🧠 System Architecture
 
-✅ Privacy-first (no raw images transmitted)
+### Hardware
+- Arduino **Nicla Vision** (camera + MCU)
+- Headphones / earphones for audio feedback
 
-✅ Low-latency, offline-capable inference
+### Software & Tools
+- **OpenMV** – camera control & preprocessing
+- **Edge Impulse** – model training & deployment
+- **Next.js** – web application
+- **WebSocket / HTTP** – data communication
+- **Web Audio API** – spatial audio generation
+- **TTS Engine** – speech feedback
 
-System Architecture
+---
 
-Hardware
+## 🔄 Data Flow Pipeline
 
-Nicla Vision (camera + MCU)
+1. Nicla Vision captures real-time camera frames  
+2. Edge Impulse model runs **on-device** to:
+   - Detect objects  
+   - Classify object types  
+   - Estimate distance  
+3. Only metadata (object label, distance, position) is transmitted  
+4. Next.js web app:
+   - Renders detected objects
+   - Generates spatial audio cues
+   - Produces text-to-speech feedback
 
-Audio output device (headphones / earphones)
+---
 
-Software & Tools
+## 🔊 Audio Feedback Logic
 
-OpenMV (camera control & preprocessing)
+- **Directional Audio (Panning):**
+  - Left → object detected on left
+  - Center → object directly ahead
+  - Right → object detected on right
 
-Edge Impulse (model training & deployment)
+- **Text-to-Speech (TTS):**
+  - Example: *"Person ahead, two meters away"*
 
-Next.js (web application)
+- **Proximity Awareness:**
+  - Closer objects trigger higher-priority alerts
 
-WebSocket / HTTP (data transfer)
+---
 
-Web Audio API (spatial audio)
+## 🚫 Why No Raspberry Pi?
 
-TTS engine (browser-based or API)
+- ❌ No bulky hardware
+- ❌ Lower power consumption
+- ❌ Faster boot and response times
+- ❌ Reduced system complexity
 
-Data Flow
-
-Nicla Vision captures live camera frames
-
-Edge Impulse model runs on-device to:
-
-Detect objects
-
-Classify object types
-
-Estimate distance
-
-Only metadata (object label, distance, position) is sent to the web app
-
-Next.js web app:
-
-Renders detected objects
-
-Generates spatial audio cues
-
-Provides TTS feedback to the user
-
-Audio Feedback Logic
-
-Directional Panning:
-
-Left → object detected on left
-
-Center → object straight ahead
-
-Right → object detected on right
-
-TTS Output:
-
-Example: “Person ahead, two meters away”
-
-Proximity Awareness:
-
-Closer objects can trigger higher priority or louder alerts
-
-Why No Raspberry Pi?
-
-❌ Reduced power consumption
-
-❌ No bulky hardware
-
-❌ Faster startup time
-
-❌ Lower system complexity
-
-This makes the solution wearable-friendly, scalable, and energy efficient.
-
-Use Cases
-
-Navigation assistance for visually impaired users
-
-Indoor and outdoor obstacle awareness
-
-Wearable assistive devices (smart glasses, chest-mounted cameras)
-
-Research in Edge AI and assistive technologies
-
-Future Improvements
-
-Dynamic obstacle prioritization
-
-Haptic feedback integration
-
-Multi-object audio scheduling
-
-Improved distance estimation accuracy
-
-Model optimization for additional object classes
-
-Project Status
-
-🟢 Active Development
-Currently focused on improving model accuracy, audio feedback strategies, and real-world testing.
-
-Acknowledgements
-
-Edge Impulse
-
-Arduino Nicla Vision
-
-OpenMV Community
 
 https://drive.google.com/drive/folders/1MmSBoZGRFOV0r8Ip49wJ2W8kl1uHytrL?usp=sharing
