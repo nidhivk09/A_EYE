@@ -225,7 +225,7 @@ async def vision_task():
         else:
             print(f"⏸️ Detected {detected_class} {best_dir} {confidence_pct}% (No BLE connection)")
 
-        await asyncio.sleep_ms(10)  # Small delay between sends
+        await asyncio.sleep_ms(5000)  # Small delay between sends
 
 # ================= MAIN =================
 async def main():
