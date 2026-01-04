@@ -7,8 +7,10 @@ An **Edge AI–based assistive vision system** designed to help visually impaire
 > ⚠️ **No Raspberry Pi is used** — all vision inference runs directly on a microcontroller.
 
 ---
+DATASET: https://drive.google.com/drive/folders/1MmSBoZGRFOV0r8Ip49wJ2W8kl1uHytrL?usp=sharing
+---
 
-## 🔑 Key Highlights
+##  Key Highlights
 
 - Pure **microcontroller-based Edge AI** (Nicla Vision)
 - Real-time object detection, classification & distance estimation
@@ -73,4 +75,4 @@ An **Edge AI–based assistive vision system** designed to help visually impaire
 - Reduced system complexity
 
 
-DATASET: https://drive.google.com/drive/folders/1MmSBoZGRFOV0r8Ip49wJ2W8kl1uHytrL?usp=sharing
+
