@@ -152,6 +152,12 @@ async def vision_task():
     while True:
         clock.tick()
 
+        a = tof.read()
+
+        if a > 1500:
+            await asyncio.sleep_ms(100)
+            continue
+
         img = sensor.snapshot()
 
         # -------- Stage 1: Global classification --------
@@ -212,18 +218,17 @@ async def vision_task():
             try:
                 payload = encode_payload(
                     detected_class,
-                    best_dir,
-                    confidence_pct
+                    best_dir
                 )
 
                 # Write to characteristic (this triggers notification)
                 ai_char.write(payload, send_update=True)
 
-                print(f"📤 TX → {detected_class} | {best_dir} | {confidence_pct}% | FPS: {clock.fps():.1f}")
+                print(f"📤 TX → {detected_class} | {best_dir} % | FPS: {clock.fps():.1f}")
             except Exception as e:
                 print(f"⚠️ BLE send error: {e}")
         else:
-            print(f"⏸️ Detected {detected_class} {best_dir} {confidence_pct}% (No BLE connection)")
+            print(f"⏸️ Detected {detected_class} {best_dir} % (No BLE connection)")
 
         await asyncio.sleep_ms(5000)  # Small delay between sends
 
