@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { connectBLE } from "./components/BLEConnector";
+import { connectBLE, type BinaryData } from "./components/BLEConnector";
 import { parseEvent, buildSentence } from "./components/EventHandler";
 import { speak } from "./components/AudioEngine";
 
@@ -29,16 +29,23 @@ export default function Dashboard() {
       setLastEvent(null);
 
       await connectBLE((raw) => {
+        console.log(`🔄 BLE callback received:`, raw);
+        
         const event = parseEvent(raw);
-        if (!event) return;
+        if (!event) {
+          console.log(`❌ parseEvent returned null`);
+          return;
+        }
 
         const sentence = buildSentence(event);
+        console.log(`🎤 Calling speak() with:`, sentence, event.direction);
         speak(sentence, event.direction);
 
         // Store event in UI
         eventCountRef.current += 1;
         setLastEvent(event);
         setEvents((prev) => [event, ...prev].slice(0, 10)); // Keep last 10 events
+        console.log(`📱 UI updated. Event count:`, eventCountRef.current);
       });
     } catch (err) {
       const message =

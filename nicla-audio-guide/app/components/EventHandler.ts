@@ -1,15 +1,46 @@
-export function parseEvent(raw: string) {
-  const [object, direction, distance, confidence] = raw.split(",");
+interface BinaryData {
+  classType: number;  // 0 = OBJECT, 1 = PERSON
+  direction: number;  // 0 = LEFT, 1 = FRONT, 2 = RIGHT
+  confidence: number; // 0-100
+}
 
-  if (Number(confidence) < 60) return null;
+const CLASS_MAP: Record<number, string> = {
+  0: "Object",
+  1: "Person",
+};
 
-  return { object, direction, distance };
+const DIRECTION_MAP: Record<number, string> = {
+  0: "left",
+  1: "center",
+  2: "right",
+};
+
+export function parseEvent(raw: BinaryData) {
+  const { classType, direction, confidence } = raw;
+
+  console.log(`📊 parseEvent received: classType=${classType}, direction=${direction}, confidence=${confidence}`);
+
+  // Filter out low confidence detections (lower threshold for testing)
+  if (confidence < 30) {
+    console.log(`⚠️ Confidence too low: ${confidence}% < 30%`);
+    return null;
+  }
+
+  const object = CLASS_MAP[classType] || "Unknown";
+  const directionName = DIRECTION_MAP[direction] || "unknown";
+
+  const result = {
+    object,
+    direction: directionName,
+    distance: `${confidence}% confidence`,
+  };
+  
+  console.log(`✅ Event parsed:`, result);
+  return result;
 }
 
 export function buildSentence(e: any) {
-  return `${capitalize(e.object)} on your ${e.direction}, ${e.distance}`;
-}
-
-function capitalize(s: string) {
-  return s.charAt(0).toUpperCase() + s.slice(1);
+  const sentence = `${e.object} on your ${e.direction}, ${e.distance}`;
+  console.log(`📣 Sentence built:`, sentence);
+  return sentence;
 }
