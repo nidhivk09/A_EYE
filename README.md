@@ -10,16 +10,16 @@ An **Edge AI–based assistive vision system** designed to help visually impaire
 
 ## 🔑 Key Highlights
 
-- ✅ Pure **microcontroller-based Edge AI** (Nicla Vision)
-- ✅ Real-time object detection, classification & distance estimation
-- ✅ Edge Impulse–trained ML model
-- ✅ Spatial audio with left / center / right panning
-- ✅ Privacy-first architecture (no raw images transmitted)
-- ✅ Low-latency, offline-capable inference
+- Pure **microcontroller-based Edge AI** (Nicla Vision)
+- Real-time object detection, classification & distance estimation
+- Edge Impulse–trained ML model
+- Spatial audio with left / center / right panning
+- Privacy-first architecture (no raw images transmitted)
+- Low-latency, offline-capable inference
 
 ---
 
-## 🧠 System Architecture
+## System Architecture
 
 ### Hardware
 - Arduino **Nicla Vision** (camera + MCU)
@@ -35,7 +35,7 @@ An **Edge AI–based assistive vision system** designed to help visually impaire
 
 ---
 
-## 🔄 Data Flow Pipeline
+## Data Flow Pipeline
 
 1. Nicla Vision captures real-time camera frames  
 2. Edge Impulse model runs **on-device** to:
@@ -50,7 +50,7 @@ An **Edge AI–based assistive vision system** designed to help visually impaire
 
 ---
 
-## 🔊 Audio Feedback Logic
+## Audio Feedback Logic
 
 - **Directional Audio (Panning):**
   - Left → object detected on left
@@ -65,12 +65,12 @@ An **Edge AI–based assistive vision system** designed to help visually impaire
 
 ---
 
-## 🚫 Why No Raspberry Pi?
+## Why No Raspberry Pi?
 
-- ❌ No bulky hardware
-- ❌ Lower power consumption
-- ❌ Faster boot and response times
-- ❌ Reduced system complexity
+- No bulky hardware
+- Lower power consumption
+- Faster boot and response times
+- Reduced system complexity
 
 
-https://drive.google.com/drive/folders/1MmSBoZGRFOV0r8Ip49wJ2W8kl1uHytrL?usp=sharing
+DATASET: https://drive.google.com/drive/folders/1MmSBoZGRFOV0r8Ip49wJ2W8kl1uHytrL?usp=sharing
