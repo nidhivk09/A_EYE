@@ -4,33 +4,69 @@ import { SERVICE_UUID, CHAR_UUID } from "@/lib/ble";
 
 export async function connectBLE(
   onData: (data: string) => void
-) {
+): Promise<BluetoothDevice> {
   if (typeof navigator === "undefined" || !("bluetooth" in navigator)) {
     throw new Error("Web Bluetooth API is not available in this environment.");
   }
 
-  // requestDevice typings may not be available in all TS setups; cast to any
-  const device = await (navigator as any).bluetooth.requestDevice({
-    filters: [{ namePrefix: "NICLA" }],
-    optionalServices: [SERVICE_UUID],
-  });
+  try {
+    console.log("🔍 Requesting Bluetooth device...");
+    
+    const device = await (navigator as any).bluetooth.requestDevice({
+      filters: [
+        { name: "NICLA-VISION" },
+        { namePrefix: "NICLA" }
+      ],
+      optionalServices: [SERVICE_UUID],
+    });
 
-  const server = await device.gatt.connect();
-  const service = await server.getPrimaryService(SERVICE_UUID);
-  const characteristic = await service.getCharacteristic(CHAR_UUID);
+    console.log("✓ Device selected:", device.name);
 
-  await characteristic.startNotifications();
+    if (!device.gatt) {
+      throw new Error("GATT server not available");
+    }
 
-  characteristic.addEventListener("characteristicvaluechanged", (event: Event) => {
-    const target = event.target as BluetoothRemoteGATTCharacteristic | null;
-    if (!target) return;
+    console.log("🔌 Connecting to GATT server...");
+    const server = await device.gatt.connect();
+    console.log("✓ Connected to GATT server");
 
-    const dataView = target.value;
-    if (!dataView) return;
+    console.log("🔍 Getting service:", SERVICE_UUID);
+    const service = await server.getPrimaryService(SERVICE_UUID);
+    console.log("✓ Service found");
 
-    // Convert DataView -> Uint8Array for TextDecoder
-    const bytes = new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength);
-    const text = new TextDecoder().decode(bytes);
-    onData(text);
-  });
+    console.log("🔍 Getting characteristic:", CHAR_UUID);
+    const characteristic = await service.getCharacteristic(CHAR_UUID);
+    console.log("✓ Characteristic found");
+
+    console.log("📡 Starting notifications...");
+    await characteristic.startNotifications();
+    console.log("✓ Notifications started");
+
+    characteristic.addEventListener("characteristicvaluechanged", (event: Event) => {
+      const target = event.target as BluetoothRemoteGATTCharacteristic | null;
+      if (!target || !target.value) return;
+
+      const dataView = target.value;
+      const bytes = new Uint8Array(
+        dataView.buffer, 
+        dataView.byteOffset, 
+        dataView.byteLength
+      );
+      const text = new TextDecoder().decode(bytes);
+      
+      console.log("📥 Received:", text);
+      onData(text);
+    });
+
+    // Handle disconnection
+    device.addEventListener('gattserverdisconnected', () => {
+      console.log("✗ Device disconnected");
+    });
+
+    return device;
+    
+  } catch (error) {
+    console.error("❌ BLE Error:", error);
+    throw error;
+  }
 }
