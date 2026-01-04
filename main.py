@@ -2,14 +2,18 @@
 # Binary classification (PERSON / OBJECT)
 # + Spatial direction (LEFT / FRONT / RIGHT) via image cropping
 
-import sensor, time, ml, uos, gc
+import sensor
+import time
+import ml
+import uos
+import gc
 
 # ---------------- Camera Setup ----------------
 sensor.reset()
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA)       # 320x240
 sensor.set_windowing((240, 240))        # Center crop
-sensor.skip_frames(time=2000)
+sensor.skip_frames(time=2000)   # Allow settings to take effect
 
 # ---------------- Load Model ----------------
 try:
@@ -28,8 +32,8 @@ except Exception as e:
 print("Loaded labels:", labels)
 
 # Confirm label order
-OBJECT_IDX = labels.index("object")
-PERSON_IDX = labels.index("person")
+OBJECT_IDX = labels.index("object_data")
+PERSON_IDX = labels.index("person_data")
 
 # ---------------- Image Regions ----------------
 IMG_W = 240
