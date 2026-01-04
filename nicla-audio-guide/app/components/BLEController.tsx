@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { connectBLE } from "@/components/BLEConnector";
-import { speak, setVolume, getVolume, stopSpeaking } from "@/components/AudioEngine";
-import { parseEvent, buildSentence } from "@/components/EventHandler";
+import { connectBLE } from "./BLEConnector";
+import { speak, setVolume, getVolume, stopSpeaking } from "./AudioEngine";
+import { parseEvent, buildSentence } from "./EventHandler";
 
 export default function BLEController() {
   const [connected, setConnected] = useState(false);

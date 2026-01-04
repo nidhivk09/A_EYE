@@ -1,7 +1,6 @@
 interface BinaryData {
   classType: number;  // 0 = OBJECT, 1 = PERSON
   direction: number;  // 0 = LEFT, 1 = FRONT, 2 = RIGHT
-  confidence: number; // 0-100
 }
 
 const CLASS_MAP: Record<number, string> = {
@@ -16,15 +15,9 @@ const DIRECTION_MAP: Record<number, string> = {
 };
 
 export function parseEvent(raw: BinaryData) {
-  const { classType, direction, confidence } = raw;
+  const { classType, direction } = raw;
 
-  console.log(`📊 parseEvent received: classType=${classType}, direction=${direction}, confidence=${confidence}`);
-
-  // Filter out low confidence detections (lower threshold for testing)
-  if (confidence < 30) {
-    console.log(`⚠️ Confidence too low: ${confidence}% < 30%`);
-    return null;
-  }
+  console.log(`📊 parseEvent received: classType=${classType}, direction=${direction}`);
 
   const object = CLASS_MAP[classType] || "Unknown";
   const directionName = DIRECTION_MAP[direction] || "unknown";
@@ -32,7 +25,7 @@ export function parseEvent(raw: BinaryData) {
   const result = {
     object,
     direction: directionName,
-    distance: `${confidence}% confidence`,
+    distance: "detected",
   };
   
   console.log(`✅ Event parsed:`, result);
